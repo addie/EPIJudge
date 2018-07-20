@@ -1,22 +1,87 @@
 from test_framework import generic_test
 from test_framework.test_failure import TestFailure
 
+class Node:
+    def __init__(self, value, prev=None, next=None):
+        self.value = value
+        self.prev = prev
+        self.next = next
+
+class DoublyLinkedList:
+    def __init__(self, capacity):
+        self.head = None
+        self.tail = None
+        self.capacity = capacity
+        self.size = 0
+
+    def appendleft(self, value):
+        if self.size == self.capacity:
+            raise IndexError('Cannot add node. List at capacity.')
+        if self.size == 0:
+            self.head = Node(value)
+            self.tail = self.head
+        else:
+            temp = self.head
+            self.head = Node(value)
+            self.head.next = temp
+            temp.prev = self.head
+        self.size += 1
+
+    def append(self, value):
+        if self.size == self.capacity:
+            raise IndexError('Cannot add node. List at capacity.')
+        if self.size == 0:
+            self.head = Node(value)
+            self.tail = self.head
+        else:
+            temp = self.tail
+            self.tail.next = Node(value)
+            self.tail = self.tail.next
+            self.tail.prev = temp
+        self.size += 1
+
+    def remove(self, value):
+
+
+
+    def popleft(self):
+        if self.size == 0:
+            raise IndexError('Cannot pop from an empty list')
+        self.size -= 1
+        val = self.head.value
+        if self.head.next:
+            self.head = self.head.next
+        self.head.prev = None
+        return val
+
+    def pop(self):
+        if self.size == 0:
+            raise IndexError('Cannot pop from an empty list')
+        self.size -= 1
+        val = self.tail.value
+        if self.tail.prev:
+            self.tail = self.tail.prev
+        self.tail.next = None
+        return val
 
 class LruCache:
     def __init__(self, capacity):
-        # TODO - you fill in here.
-        return
+        self.queue = DoublyLinkedList(capacity)
+        self.map = {}
+        self.size = 0
+        self.capacity = capacity
 
     def lookup(self, isbn):
-        # TODO - you fill in here.
         return 0
 
     def insert(self, isbn, price):
-        # TODO - you fill in here.
-        return
+        if self.size == capacity:
+            if isbn in self.map:
+
+
+        self.size -= 1
 
     def erase(self, isbn):
-        # TODO - you fill in here.
         return True
 
 
@@ -44,6 +109,4 @@ def run_test(commands):
 
 
 if __name__ == '__main__':
-    exit(
-        generic_test.generic_test_main("lru_cache.py", 'lru_cache.tsv',
-                                       run_test))
+    exit(generic_test.generic_test_main("lru_cache.py", 'lru_cache.tsv', run_test))
